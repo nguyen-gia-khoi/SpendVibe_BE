@@ -20,10 +20,9 @@ app.use((error, _req, res, _next) => {
   res.status(statusCode).json({message});
 });
 
-
-const PORT = process.env.PORT ||0;
-console.log("PORT", PORT);
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.get("/test", (req, res) => {
+  res.json({message: "Hello World! Backend is connected successfully."});
 });
+
+
 module.exports = app;
