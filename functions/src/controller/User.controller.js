@@ -18,6 +18,7 @@ const saveUser = async (req, res) => {
         uid,
         email,
         displayName: displayName || "",
+        balance: 0,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       });
@@ -47,5 +48,27 @@ const testFirestore = async (req, res) => {
     res.status(500).json({error: "Failed to connect to Firestore"});
   }
 };
-module.exports = {saveUser, testFirestore};
+const getUser = async (req, res) => {
+  try {
+    const {uid} = req.params; // Nhận UID từ request
+    console.log("UID:", uid);
+    if (!uid) {
+      return res.status(400).json({error: "Thiếu UID"});
+    }
+
+    const userRef = db.collection("users").doc(uid);
+    const userDoc = await userRef.get();
+
+    if (!userDoc.exists) {
+      return res.status(404).json({error: "User không tồn tại"});
+    }
+
+    return res.status(200).json(userDoc.data()); // Trả về dữ liệu user
+  } catch (error) {
+    console.error("Lỗi khi lấy user:", error);
+    return res.status(500).json({error: "Lỗi server"});
+  }
+};
+
+module.exports = {saveUser, testFirestore, getUser};
 

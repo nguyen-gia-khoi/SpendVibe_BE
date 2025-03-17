@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const fileParser = require("express-multipart-file-parser");
 
 const customerRoutes =require("./src/routes/auth.Routes");
+const transactionRoutes = require("./src/routes/transaction.Routes.js");
 dotenv.config();
 const app = express();
 
@@ -14,7 +15,7 @@ app.use(fileParser);
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use("/v1/customer", customerRoutes);
-
+app.use("/v1/transaction", transactionRoutes);
 app.use((error, _req, res, _next) => {
   const statusCode = error.statusCode || 500;
   const message = error.message || "Internal Server Error";
