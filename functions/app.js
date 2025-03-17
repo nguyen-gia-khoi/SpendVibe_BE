@@ -4,7 +4,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const fileParser = require("express-multipart-file-parser");
 
-
+const customerRoutes =require("./src/routes/auth.Routes");
 dotenv.config();
 const app = express();
 
@@ -13,6 +13,7 @@ app.use(cors());
 app.use(fileParser);
 app.use(bodyParser.urlencoded({extended: true}));
 
+app.use("/v1/customer", customerRoutes);
 
 app.use((error, _req, res, _next) => {
   const statusCode = error.statusCode || 500;
